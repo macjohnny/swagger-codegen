@@ -284,13 +284,16 @@ public class TypeScriptAngularClientCodegen extends AbstractTypeScriptClientCode
                         pathBuffer.append(".toISOString()");
                     }
                     pathBuffer.append("))}");
+
+                    // reset parameter name validation
                     parameterName.setLength(0);
+                    skipThisAndSubsequentChars = false;
                     break;
                 default:
                     char nextChar = op.path.charAt(i);
                     if (insideCurly > 0) {
-                        if (!Character.isLetterOrDigit(nextChar) && nextChar != '_') {
-                            // skip any non-alpha numeric characters (and subsequent parameters)
+                        if (nextChar == ':') {
+                            // skip colon and any subsequent characters
                             // not belonging to the parameter name
                             skipThisAndSubsequentChars = true;
                         }
